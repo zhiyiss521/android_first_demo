@@ -1,7 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-//    id 'org.jetbrains.kotlin.plugin.compose'
+    //
+    id 'kotlin-kapt'
 }
 
 android {
@@ -32,48 +33,40 @@ android {
     }
     buildFeatures {
         viewBinding true
-        compose false
+        dataBinding true
     }
 }
 
 dependencies {
-    implementation platform('androidx.compose:compose-bom:2024.06.00')
-    implementation 'androidx.activity:activity-compose:1.8.0'
-    implementation 'androidx.activity:activity-ktx:1.8.0'
-    implementation 'androidx.compose.material3:material3'
-    implementation 'androidx.compose.ui:ui'
-    implementation 'androidx.compose.ui:ui-graphics'
-    implementation 'androidx.compose.ui:ui-tooling-preview'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.20"
-    // 基础官方库
-    implementation 'androidx.core:core-ktx:1.9.0' // 顺手小升一下以适配 SDK 34
+    implementation 'androidx.core:core-ktx:1.12.0' // 升级以更好匹配 SDK 34
     implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.9.8'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.9.8'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.navigation:navigation-fragment:2.5.3'
-    implementation 'androidx.navigation:navigation-ui:2.5.3'
 
-    // 测试相关
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation platform('androidx.compose:compose-bom:2024.06.00')
-    androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation 'androidx.activity:activity-ktx:1.8.2'
+    implementation 'androidx.fragment:fragment-ktx:1.6.2'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.7.0'
 
-    // ==================== 🛠️ 核心新增：协程与生命周期库 ====================
-    // 缺少这两行，lifecycleScope.launch 就会雷打不动地报错
+    // 3. 协程
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.7.0"
 
-    // ==================== 🌐 网络请求：Retrofit 2.11.0 ====================
+    // 4. 网络请求：Retrofit 2.11.0
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
     implementation "com.squareup.retrofit2:retrofit:2.11.0"
     implementation "com.squareup.retrofit2:converter-gson:2.11.0"
 
-    // 图片加载库
+    // 5. 图片加载库：Glide
     implementation "com.github.bumptech.glide:glide:4.16.0"
-    debugImplementation 'androidx.compose.ui:ui-test-manifest'
-    debugImplementation 'androidx.compose.ui:ui-tooling'
+    // 🌟【核心新增】既然开启了 kapt 插件，Glide 的注解处理器也要用 kapt 引入
+    kapt "com.github.bumptech.glide:compiler:4.16.0"
+
+    // 6. 测试相关
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
 
 }
