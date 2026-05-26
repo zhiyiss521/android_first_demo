@@ -6,9 +6,11 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.zhiyi.android_first_demo.databinding.ActivityHomeBinding
+import com.zhiyi.android_first_demo.util.LogUtil
 import com.zhiyi.android_first_demo.viewmodel.MainViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 // 当我更换接口的时候，我发现activity完全不用改，只是为了给view绑定东西
 // 调用vm的方法，监听vm，赋值给view
@@ -42,7 +44,7 @@ class HomeActivity : AppCompatActivity() {
             }
         }
         postAdapter.onItemClickListener = { item ->
-            Log.d("zhiyi","${item.author}")
+            LogUtil.d("哈哈哈")
 
             val intent = Intent(this, PostDetailActivity::class.java).apply {
                 putExtra("image_id", item.id)

@@ -3,15 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <uses-feature
-        android:name="android.hardware.touchscreen"
-        android:required="false" />
-    <uses-feature
-        android:name="android.software.leanback"
-        android:required="true" />
+    <uses-feature  android:name="android.hardware.touchscreen"  android:required="false" />
 
     <application
+        android:name=".MyApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -21,39 +16,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Android_first_demo"
         tools:targetApi="31">
+
         <activity
             android:name=".ui.PostDetailActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.detail.PostDetailActivity"
             android:banner="@drawable/app_icon_your_company"
             android:exported="false"
             android:icon="@drawable/app_icon_your_company"
             android:label="@string/title_activity_post_detail"
             android:logo="@drawable/app_icon_your_company"
-            android:screenOrientation="landscape"
             android:theme="@style/Theme.Android_first_demo">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
-            </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.detail.DetailsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".PlaybackActivity"
-            android:exported="false" />
-        <activity
-            android:name=".BrowseErrorActivity"
-            android:exported="false" />
+
         <activity
             android:name=".ui.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
@@ -61,6 +39,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
     </application>
 
 </manifest>

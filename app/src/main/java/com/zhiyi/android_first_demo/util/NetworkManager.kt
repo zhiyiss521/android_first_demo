@@ -1,10 +1,12 @@
 package com.zhiyi.android_first_demo.util
 
+import android.util.Log
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 object NetworkManager {
@@ -21,7 +23,11 @@ object NetworkManager {
             chain.proceed(requestBuilder.url(originalRequest.url).build())
         }
 
-        val loggingInterceptor = HttpLoggingInterceptor().apply {
+        val loggingInterceptor = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
+            override fun log(message: String) {
+                LogUtil.d( message)
+            }
+        }).apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
 
