@@ -1,10 +1,10 @@
 package com.zhiyi.android_first_demo.ui
 
-import android.R
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.zhiyi.android_first_demo.R
 import com.zhiyi.android_first_demo.databinding.LayoutItemCellBinding // 假设你的 item 布局叫这个
 import com.zhiyi.android_first_demo.model.ImagePost
 import com.zhiyi.android_first_demo.model.UnsplashImage
@@ -18,19 +18,19 @@ class PostAdapter : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
             binding.tvUserNickname.text = model.user.username
             binding.tvLike.text = model.likes.toString()
             if (model.liked_by_user) {
-//                binding.imageVHeart.setImageResource(R.drawable.ic)
+                binding.imageVHeart.setImageResource(R.drawable.ic_heart_red)
             } else {
-//                binding.imageVHeart.setImageResource(R.drawable.ic_heart_empty)
+                binding.imageVHeart.setImageResource(R.drawable.ic_heart_gray)
             }
 
             Glide.with(binding.root.context)
                 .load(model.urls.small)
-                .placeholder(R.color.darker_gray)
+//                .placeholder(R.color.darker_gray)
                 .into(binding.image)
 
             Glide.with(binding.root.context)
                 .load(model.user.profile_image.small)
-                .placeholder(R.color.darker_gray)
+//                .placeholder(R.color.darker_gray)
                 .into(binding.imageVUserAvatar)
 
         }
