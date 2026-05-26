@@ -4,11 +4,14 @@ import android.util.Log
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.json.JSONArray
+import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
+// Retrofit,底层是okHttpClient
 object NetworkManager {
 
     private val okHttpClient: OkHttpClient by lazy {
@@ -18,14 +21,39 @@ object NetworkManager {
 
             val requestBuilder = originalRequest.newBuilder()
                 .addHeader("Content-Type", "application/json")
-                .addHeader("Device-Type", "Android")
+                .addHeader("Authorization","Client-ID -sncfr6j20Nw3vWh5vY2JSAti-AS-X3d1OKoHk9pgJo")
 
             chain.proceed(requestBuilder.url(originalRequest.url).build())
         }
 
+        var currentUrl = ""
+        var currentStatus = ""
         val loggingInterceptor = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
             override fun log(message: String) {
-                LogUtil.d( message)
+                when {
+                    message.startsWith("--> GET") || message.startsWith("--> POST") -> {
+                        currentUrl = message.substringAfter("--> GET ").substringAfter("--> POST ")
+                    }
+                    message.startsWith("<-- ") && !message.contains("END HTTP") -> {
+                        currentStatus = message.substringAfter("<-- ").substringBefore(" ")
+                    }
+                    message.startsWith("{") || message.startsWith("[") -> {
+                        val prettyJson = try {
+                            if (message.startsWith("{")) {
+                                JSONObject(message).toString(4)
+                            } else {
+                                JSONArray(message).toString(4)
+                            }
+                        } catch (e: Exception) {
+                            message
+                        }
+                        val finalLog = "[URL]: $currentUrl\n[status]: $currentStatus\n[response]:\n$prettyJson".trimIndent()
+                        LogUtil.d(finalLog)
+                    }
+                    message.startsWith("<-- HTTP FAILED") -> {
+                        LogUtil.d("[URL]: $currentUrl [status]: FAILED  [response]: ${message.substringAfter("FAILED: ")}")
+                    }
+                }
             }
         }).apply {
             level = HttpLoggingInterceptor.Level.BODY

@@ -14,24 +14,57 @@
             android:id="@+id/detailToolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:title="图片详情"
-            app:titleTextColor="@android:color/white"
-            app:navigationIcon="?attr/homeAsUpIndicator" />
+            android:background="@android:color/white" app:navigationIcon="?attr/homeAsUpIndicator" app:navigationIconTint="#333333" app:contentInsetStartWithNavigation="0dp"> <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="4dp"
+            android:paddingEnd="16dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivUserAvatar"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_launcher_background"
+                app:imageUrl="@{vm.postState.user.profile_image.small}"
+                app:shapeAppearanceOverlay="@style/CircleImageStyle" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="10dp">
+                <TextView
+                    android:id="@+id/tvUserNickname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{vm.postState.user.username}"
+                    android:textColor="#333333"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
 
         <ImageView
             android:id="@+id/detailImageView"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:scaleType="centerCrop"
-            app:imageUrl="@{vm.postState.downloadUrl}" />
+            app:imageUrl="@{vm.postState.urls.regular}" />
 
         <TextView
             android:id="@+id/authorTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="@{`作者: ` + vm.postState.author}"
+            android:text="@{`作者: ` + vm.postState.user}"
             android:textColor="@android:color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -40,7 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="16dp"
-            android:text="@{`图片ID: ` + vm.postState.id}"
+            android:text="@{vm.postState.description}"
             android:textColor="@android:color/darker_gray"
             android:textSize="14sp" />
 

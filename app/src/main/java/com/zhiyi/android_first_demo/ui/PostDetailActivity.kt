@@ -20,15 +20,19 @@ class PostDetailActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.vm = vm
 
+        initUI()
+        getData()
+    }
+
+    fun initUI(){
         binding.detailToolbar.setNavigationOnClickListener {
             finish()
         }
+    }
 
+    fun getData(){
         var imageId = intent.getStringExtra("image_id")
         vm.requestDetail(imageId!!)
     }
-
-
-
 
 }

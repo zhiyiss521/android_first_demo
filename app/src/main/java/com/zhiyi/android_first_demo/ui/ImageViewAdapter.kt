@@ -4,14 +4,8 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 
-/**
- * 🌟 这是一个【顶层函数】（没有写在任何 class 关键字里面）。
- * 这样 Data Binding 编译器才能在全球范围内一眼找到它！
- * * 当你在 XML 里写 app:imageUrl 时，系统会自动把 ImageView 实例和字符串网址传进这个函数。
- */
 @BindingAdapter("imageUrl")
 fun loadImage(imageView: ImageView, url: String?) {
-    // 如果网址不为空，就用 Glide 去异步下载图片
     if (!url.isNullOrEmpty()) {
         Glide.with(imageView.context)
             .load(url)

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.zhiyi.android_first_demo.databinding.ActivityHomeBinding
 import com.zhiyi.android_first_demo.util.LogUtil
 import com.zhiyi.android_first_demo.viewmodel.MainViewModel
@@ -31,21 +32,28 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun initUI(){
-        binding!!.tvTime.text = "测试更新aa";
+        val manager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        manager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+        binding!!.recyclerViewList.layoutManager = manager
+
+        val spacingInPixels = 24
+        binding!!.recyclerViewList.addItemDecoration(
+            StaggeredGridSpacingItemDecoration(2, spacingInPixels)
+        )
+        binding!!.recyclerViewList.setBackgroundColor(android.graphics.Color.parseColor("#F5F7F9"))
+
+
         binding!!.recyclerViewList.adapter = postAdapter;
 
         lifecycleScope.launch {
             viewModel.postListState.collectLatest { newList ->
                 // 监听vm中数据的变化，目前和adapter无关
                 if (newList.isNotEmpty()) {
-                    // 当数据变化，改变adapter的数据，adapter的数据变化会引起view的变化
                     postAdapter.dataList = newList
                 }
             }
         }
         postAdapter.onItemClickListener = { item ->
-            LogUtil.d("哈哈哈")
-
             val intent = Intent(this, PostDetailActivity::class.java).apply {
                 putExtra("image_id", item.id)
             }
