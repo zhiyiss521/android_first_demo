@@ -2,13 +2,13 @@ package com.zhiyi.android_first_demo.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.zhiyi.android_first_demo.databinding.ActivityHomeBinding
 import com.zhiyi.android_first_demo.util.LogUtil
-import com.zhiyi.android_first_demo.viewmodel.MainViewModel
+import com.zhiyi.android_first_demo.viewmodel.HomeViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 // 调用vm的方法，监听vm，赋值给view
 class HomeActivity : AppCompatActivity() {
     private var binding: ActivityHomeBinding? = null
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel: HomeViewModel by viewModels()
     private val postAdapter = PostAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +31,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun initUI(){
+        // recyclerViewList
         val manager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         manager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
         binding!!.recyclerViewList.layoutManager = manager
@@ -44,15 +45,6 @@ class HomeActivity : AppCompatActivity() {
 
         binding!!.recyclerViewList.adapter = postAdapter;
 
-        lifecycleScope.launch {
-            viewModel.postListState.collectLatest { newList ->
-                binding!!.swipeRefresh.isRefreshing = false
-                // 监听vm中数据的变化，目前和adapter无关
-                if (newList.isNotEmpty()) {
-                    postAdapter.dataList = newList
-                }
-            }
-        }
         postAdapter.onItemClickListener = { item ->
             val intent = Intent(this, PostDetailActivity::class.java).apply {
                 putExtra("image_id", item.id)
@@ -60,9 +52,48 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // 下拉加载组件
         binding!!.swipeRefresh.setOnRefreshListener {
             viewModel.requestList()
         }
+        // 上拉加载
+        binding!!.recyclerViewList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    if (viewModel.refreshingState.value) return
+                    val layoutManager = recyclerView.layoutManager as StaggeredGridLayoutManager
+                    val lastVisiblePositions = layoutManager.findLastVisibleItemPositions(null)
+                    val lastVisibleItem = lastVisiblePositions.maxOrNull() ?: 0
+                    val totalItemCount = layoutManager.itemCount
+                    if (lastVisibleItem >= totalItemCount - 1) {
+                        viewModel.requestList(isRefresh = false)
+                    }
+                }
+            }
+        })
+
+        // 监听vm
+        lifecycleScope.launch {
+            viewModel.postListState.collectLatest { newList ->
+                // 这里是因为
+                // 监听vm中数据的变化，目前和adapter无关
+                if (newList.isNotEmpty()) {
+                    postAdapter.updateData(newList)
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.refreshingState.collect { isRefreshing ->
+                if (isRefreshing) {
+                    // 只有下拉触发时，这里才会有反应
+                } else {
+                    binding!!.swipeRefresh.isRefreshing = false
+                }
+            }
+        }
+
 
     }
 

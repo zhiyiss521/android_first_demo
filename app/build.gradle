@@ -65,7 +65,6 @@ dependencies {
     // 🌟【核心新增】既然开启了 kapt 插件，Glide 的注解处理器也要用 kapt 引入
     kapt "com.github.bumptech.glide:compiler:4.16.0"
 
-    // 6. 测试相关
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

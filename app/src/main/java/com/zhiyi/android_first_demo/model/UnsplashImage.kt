@@ -12,16 +12,61 @@ data class UnsplashImage (
     val alt_description:String,
     val views:Int,
     val downloads:Int,
-    var liked_by_user:Boolean
+    val liked_by_user:Boolean,
+    val exif:UnsplashExif,
 )
 
-data class ImageUrls(val regular: String, val small: String)
+data class ImageUrls(val regular: String, val small: String,val raw: String,val full: String,val thumb: String,val small_s3: String)
+
 data class UnsplashUser(
-    var id :String,
-    val name: String,
-    val username: String,
-    var profile_image:UnsplashUserProfileImage
+    val id: String,
+    val updated_at: String?,
+    val username: String?,
+    val name: String?,
+    val first_name: String?,
+    val last_name: String?,
+    val twitter_username: String?,
+    val portfolio_url: String?,
+    val bio: String?,
+    val location: String?,
+    val links: UnsplashUserLinks?,
+    val profile_image: UnsplashUserProfileImage?,
+    val instagram_username: String?,
+    val total_collections: Int = 0,
+    val total_likes: Int = 0,
+    val total_photos: Int = 0,
+    val total_free_photos: Int = 0,
+    val total_promoted_photos: Int = 0,
+    val total_illustrations: Int = 0,
+    val total_free_illustrations: Int = 0,
+    val total_promoted_illustrations: Int = 0,
+    val accepted_tos: Boolean = false,
+    val for_hire: Boolean = false,
+    val social: UnsplashUserSocial?
 )
+
+data class UnsplashUserLinks(
+    val self: String?,
+    val html: String?,
+    val photos: String?,
+    val likes: String?
+)
+
 data class UnsplashUserProfileImage(val small: String,val medium:String,val large:String)
 
-data class UnsplashSearchResponse(val total: Int, val results: List<UnsplashImage>)
+data class UnsplashUserSocial(
+    val instagram_username: String?,
+    val portfolio_url: String?,
+    val twitter_username: String?,
+    val paypal_email: String?
+)
+
+data class UnsplashExif(
+     val make:String?,
+     val model:String?,
+     val name:String?,
+     val exposure_time:String?,
+     val aperture:String?,
+     val focal_length:String?,
+     val iso:Int
+)
