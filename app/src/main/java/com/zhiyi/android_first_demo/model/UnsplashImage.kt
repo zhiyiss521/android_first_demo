@@ -14,6 +14,7 @@ data class UnsplashImage (
     val downloads:Int,
     val liked_by_user:Boolean,
     val exif:UnsplashExif,
+    val location:UnsplashLocation?
 )
 
 data class ImageUrls(val regular: String, val small: String,val raw: String,val full: String,val thumb: String,val small_s3: String)
@@ -70,3 +71,17 @@ data class UnsplashExif(
      val focal_length:String?,
      val iso:Int
 )
+
+
+data class UnsplashLocation(
+    val city:String?,
+    val country:String?,
+    val name:String?,
+    val position:UnsplashLocationPosition?,
+)
+
+data class UnsplashLocationPosition(
+    val latitude:Double,
+    val longitude:Double,
+)
+

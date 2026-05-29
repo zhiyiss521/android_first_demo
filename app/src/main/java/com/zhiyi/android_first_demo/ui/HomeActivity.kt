@@ -11,6 +11,8 @@ import com.zhiyi.android_first_demo.util.LogUtil
 import com.zhiyi.android_first_demo.viewmodel.HomeViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.maplibre.android.MapLibre
+import org.maplibre.android.maps.MapView
 
 // 当我更换接口的时候，我发现activity完全不用改，只是为了给view绑定东西
 // 调用vm的方法，监听vm，赋值给view
@@ -93,7 +95,6 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         }
-
 
     }
 

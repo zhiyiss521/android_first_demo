@@ -36,7 +36,7 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:scaleType="centerCrop"
-                        app:imageUrl="@{vm.postState.user.profile_image.medium}"
+                        app:imageUrl="@{vm.postState.user.profile_image.small}"
                         app:shapeAppearanceOverlay="@style/CircleImageStyle" />
 
                     <LinearLayout
@@ -86,7 +86,7 @@
                     tools:layout_height = "400dp"
                     tools:background="#DDDDDD"
                     app:imageRatio="@{(float) vm.postState.height / vm.postState.width}"
-                    app:imageUrl="@{vm.postState.urls.regular}" />
+                    app:imageUrl="@{vm.postState.urls.small}" />
 
                 <!-- 点赞 -->
                 <LinearLayout
@@ -107,7 +107,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=""
+                            android:text="1000"
                             android:textSize="18sp" />
 
                         <TextView
@@ -168,12 +168,21 @@
 
                 </LinearLayout>
 
+                <!-- 地图 -->
+                <com.zhiyi.android_first_demo.ui.view.TouchableMapView
+                    android:id="@+id/mapView"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    />
+
                 <!-- Description -->
                 <LinearLayout
                     android:visibility="@{vm.postState.description != null ? View.VISIBLE : View.GONE}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
                     android:paddingHorizontal="16dp">
 
                     <TextView
@@ -195,7 +204,7 @@
 
                 </LinearLayout>
 
-                <!-- 照片 -->
+                <!-- 照片参数 -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
