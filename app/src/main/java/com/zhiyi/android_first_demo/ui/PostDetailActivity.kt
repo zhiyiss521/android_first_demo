@@ -25,6 +25,7 @@ class PostDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         MapLibre.getInstance(this)
 
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_post_detail)
         binding.lifecycleOwner = this
         binding.vm = vm
@@ -80,23 +81,18 @@ class PostDetailActivity : AppCompatActivity() {
                 .target(LatLng(0.0,0.0))
                 .zoom(1.0)
                 .build()
-
-
         }
 
         lifecycleScope.launch {
             vm.postState.collect { unsplashImage ->
                 if (unsplashImage?.location?.position != null) {
-                    val lat = unsplashImage?.location?.position.latitude
-                    val lng = unsplashImage?.location?.position.longitude
+                    val lat = unsplashImage.location.position.latitude
+                    val lng = unsplashImage.location.position.longitude
                     LogUtil.d("lat:${lat},lng:${lng},name:${unsplashImage?.location?.country}")
-                    val targetLocation = LatLng(lat,lng)
+                    val targetLocation = LatLng(39.9075,116.3914)
 
                     binding.mapView.getMapAsync { map ->
-                        map.animateCamera( CameraUpdateFactory.newLatLngZoom(targetLocation,16.0), 2000 )
-
-
-
+                        map.animateCamera( CameraUpdateFactory.newLatLngZoom(targetLocation,20.0), 2000 )
                     }
                 }
             }

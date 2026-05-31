@@ -11,6 +11,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -169,11 +170,17 @@
                 </LinearLayout>
 
                 <!-- 地图 -->
-                <com.zhiyi.android_first_demo.ui.view.TouchableMapView
-                    android:id="@+id/mapView"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="150dp"
+                    android:background="#FFFFFF">
+
+                    <com.zhiyi.android_first_demo.ui.view.TouchableMapView
+                        android:id="@+id/mapView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                     />
+                </LinearLayout>
 
                 <!-- Description -->
                 <LinearLayout
@@ -262,6 +269,21 @@
                     </LinearLayout>
 
                 </com.google.android.material.card.MaterialCardView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:background="#E6F2FF"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="这是一个有背景色的固定模块"
+                        android:textColor="#0066CC" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
