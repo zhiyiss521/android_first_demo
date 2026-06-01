@@ -338,7 +338,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="40dp"
                     android:text="Photos"
                     android:textColor="#111111"
                     android:textSize="22sp"
