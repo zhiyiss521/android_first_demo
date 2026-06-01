@@ -4,19 +4,307 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="vm"
             type="com.zhiyi.android_first_demo.viewmodel.UserDetailVM" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#FFFFFF">
+        android:layout_height="match_parent">
 
-        <!-- 可滚动区域 -->
+        <!-- AppBar -->
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="420dp"
+            android:background="@android:color/transparent"
+            app:elevation="0dp">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:contentScrim="#FFFFFF"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:scrimAnimationDuration="250"
+                app:titleEnabled="false">
+
+                <!-- Header -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_collapseMode="parallax">
+
+                    <!-- Cover -->
+                    <ImageView
+                        android:id="@+id/ivCover"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        app:blurRadius="@{20}"
+                        app:imageUrl="@{vm.userState.profile_image.medium}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <!-- Gradient -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_cover_gradient"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <!-- Content -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="100dp"
+                        android:paddingHorizontal="16dp"
+                        android:paddingBottom="24dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent">
+
+                        <!-- Avatar -->
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/ivAvatar"
+                            android:layout_width="88dp"
+                            android:layout_height="88dp"
+                            android:padding="3dp"
+                            android:scaleType="centerCrop"
+                            app:imageUrl="@{vm.userState.profile_image.medium}"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:shapeAppearanceOverlay="@style/CircleImageStyle"
+                            app:strokeColor="#FFFFFF"
+                            app:strokeWidth="3dp"
+                            tools:src="@tools:sample/avatars" />
+
+                        <!-- Name -->
+                        <TextView
+                            android:id="@+id/tvName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="@{vm.userState.name}"
+                            android:textColor="#FFFFFF"
+                            android:textSize="26sp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/ivAvatar"
+                            tools:text="Ashford Marx" />
+
+                        <!-- Username -->
+                        <TextView
+                            android:id="@+id/tvUsername"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text='@{"@" + vm.userState.username}'
+                            android:textColor="#DDDDDD"
+                            android:textSize="14sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tvName"
+                            tools:text="ashford_marx" />
+
+                        <!-- Bio -->
+                        <TextView
+                            android:id="@+id/tvBio"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:ellipsize="end"
+                            android:maxLines="3"
+                            android:text="@{vm.userState.bio}"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tvUsername"
+                            tools:text="Aspiring photographer :)" />
+
+                        <!-- Location -->
+                        <TextView
+                            android:id="@+id/tvLocation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@{vm.userState.location}"
+                            android:textColor="#DDDDDD"
+                            android:textSize="13sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tvBio"
+                            tools:text="George, South Africa" />
+
+                        <!-- Stats -->
+                        <LinearLayout
+                            android:id="@+id/layoutStats"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:orientation="horizontal"
+                            app:layout_constraintTop_toBottomOf="@id/tvLocation">
+
+                            <!-- Photos -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{String.valueOf(vm.userState.total_photos)}"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    tools:text="237" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="Photos"
+                                    android:textColor="#DDDDDD"
+                                    android:textSize="12sp" />
+
+                            </LinearLayout>
+
+                            <!-- Likes -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{String.valueOf(vm.userState.total_likes)}"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    tools:text="303" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="Likes"
+                                    android:textColor="#DDDDDD"
+                                    android:textSize="12sp" />
+
+                            </LinearLayout>
+
+                            <!-- Collections -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@{String.valueOf(vm.userState.total_collections)}"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    tools:text="12" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="Collections"
+                                    android:textColor="#DDDDDD"
+                                    android:textSize="12sp" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- Toolbar -->
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="88dp"
+                    android:paddingTop="28dp"
+                    android:background="@android:color/transparent"
+                    app:layout_collapseMode="pin">
+
+                    <!-- 返回按钮 -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardBack"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="start|center_vertical"
+                        android:layout_marginStart="12dp"
+                        app:cardBackgroundColor="#66000000"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="0dp">
+
+                        <ImageButton
+                            android:id="@+id/btnBack"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/transparent"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_arrow_back_24"
+                            android:tint="#FFFFFF" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- 折叠后的用户信息 -->
+                    <LinearLayout
+                        android:id="@+id/layoutCollapsedUser"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:gravity="center_vertical"
+                        android:alpha="0"
+                        android:orientation="horizontal"
+                        android:visibility="invisible">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:scaleType="centerCrop"
+                            app:imageUrl="@{vm.userState.profile_image.medium}"
+                            app:shapeAppearanceOverlay="@style/CircleImageStyle"
+                            tools:src="@tools:sample/avatars" />
+
+                        <TextView
+                            android:id="@+id/tvCollapsedName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="@{vm.userState.name}"
+                            android:textColor="#111111"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            tools:text="Ashford Marx" />
+
+                    </LinearLayout>
+
+                </androidx.appcompat.widget.Toolbar>
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!-- Scroll Content -->
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -26,231 +314,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#FFFFFF"
                 android:orientation="vertical">
 
-                <!-- 顶部区域 -->
-                <com.google.android.material.appbar.AppBarLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#FFFFFF"
-                    app:elevation="0dp">
-
-                    <com.google.android.material.appbar.CollapsingToolbarLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:contentScrim="@android:color/transparent"
-                        app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                        app:scrimAnimationDuration="250"
-                        app:titleEnabled="false">
-
-                        <!-- Header -->
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <!-- 背景图 -->
-                            <ImageView
-                                android:id="@+id/ivCover"
-                                android:layout_width="match_parent"
-                                android:layout_height="360dp"
-                                android:scaleType="centerCrop"
-                                app:blurRadius="@{20}"
-                                app:imageUrl="@{vm.userState.profile_image.medium}"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <!-- 黑色渐变遮罩 -->
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="360dp"
-                                android:background="@drawable/bg_cover_gradient"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <!-- 内容 -->
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="16dp"
-                                android:paddingTop="96dp"
-                                android:paddingEnd="16dp"
-                                android:paddingBottom="24dp"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <!-- 头像 -->
-                                <com.google.android.material.imageview.ShapeableImageView
-                                    android:id="@+id/ivAvatar"
-                                    android:layout_width="88dp"
-                                    android:layout_height="88dp"
-                                    android:padding="3dp"
-                                    android:scaleType="centerCrop"
-                                    app:imageUrl="@{vm.userState.profile_image.medium}"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    app:shapeAppearanceOverlay="@style/CircleImageStyle"
-                                    app:strokeColor="#FFFFFF"
-                                    app:strokeWidth="3dp"
-                                    tools:src="@tools:sample/avatars" />
-
-                                <!-- 用户名 -->
-                                <TextView
-                                    android:id="@+id/tvName"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="16dp"
-                                    android:text="@{vm.userState.name}"
-                                    android:textColor="#FFFFFF"
-                                    android:textSize="24sp"
-                                    android:textStyle="bold"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@id/ivAvatar"
-                                    tools:text="Ashford Marx" />
-
-                                <!-- username -->
-                                <TextView
-                                    android:id="@+id/tvUsername"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:text='@{"@" + vm.userState.username}'
-                                    android:textColor="#E0E0E0"
-                                    android:textSize="14sp"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@id/tvName"
-                                    tools:text="ashford_marx" />
-
-                                <!-- bio -->
-                                <TextView
-                                    android:id="@+id/tvBio"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="12dp"
-                                    android:ellipsize="end"
-                                    android:maxLines="3"
-                                    android:text="@{vm.userState.bio}"
-                                    android:textColor="#FFFFFF"
-                                    android:textSize="14sp"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@id/tvUsername"
-                                    tools:text="Aspiring photographer :)" />
-
-                                <!-- location -->
-                                <TextView
-                                    android:id="@+id/tvLocation"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:text="@{vm.userState.location}"
-                                    android:textColor="#DDDDDD"
-                                    android:textSize="13sp"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@id/tvBio"
-                                    tools:text="George, South Africa" />
-
-                                <!-- 统计 -->
-                                <LinearLayout
-                                    android:id="@+id/layoutStats"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="24dp"
-                                    android:gravity="center"
-                                    android:orientation="horizontal"
-                                    app:layout_constraintTop_toBottomOf="@id/tvLocation">
-
-                                    <!-- Photos -->
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:gravity="center"
-                                        android:orientation="vertical">
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="@{String.valueOf(vm.userState.total_photos)}"
-                                            android:textColor="#FFFFFF"
-                                            android:textSize="20sp"
-                                            android:textStyle="bold"
-                                            tools:text="237" />
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="4dp"
-                                            android:text="Photos"
-                                            android:textColor="#000000"
-                                            android:textSize="12sp" />
-                                    </LinearLayout>
-
-                                    <!-- Likes -->
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:gravity="center"
-                                        android:orientation="vertical">
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="@{String.valueOf(vm.userState.total_likes)}"
-                                            android:textColor="#FFFFFF"
-                                            android:textSize="20sp"
-                                            android:textStyle="bold"
-                                            tools:text="303" />
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="4dp"
-                                            android:text="Likes"
-                                            android:textColor="#000000"
-                                            android:textSize="12sp" />
-                                    </LinearLayout>
-
-                                    <!-- Collections -->
-                                    <LinearLayout
-                                        android:layout_width="0dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:gravity="center"
-                                        android:orientation="vertical">
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="@{String.valueOf(vm.userState.total_collections)}"
-                                            android:textColor="#FFFFFF"
-                                            android:textSize="20sp"
-                                            android:textStyle="bold"
-                                            tools:text="0" />
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="4dp"
-                                            android:text="Collections"
-                                            android:textColor="#000000"
-                                            android:textSize="12sp" />
-                                    </LinearLayout>
-
-                                </LinearLayout>
-
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-                </com.google.android.material.appbar.AppBarLayout>
-
-                <!-- tags -->
+                <!-- Tags -->
                 <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -262,14 +329,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:paddingHorizontal="16dp">
-
-                        <!-- 后面动态 addView -->
-                    </LinearLayout>
+                        android:paddingHorizontal="16dp" />
 
                 </HorizontalScrollView>
 
-                <!-- Photos title -->
+                <!-- Photos Title -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -290,7 +354,7 @@
                     android:textSize="13sp"
                     tools:text="237 public photos" />
 
-                <!-- 照片列表 -->
+                <!-- RecyclerView -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvPhotos"
                     android:layout_width="match_parent"
@@ -304,28 +368,6 @@
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
-
-        <!-- 固定返回按钮 -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/btnBackContainer"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="54dp"
-            app:cardBackgroundColor="#66000000"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="0dp">
-
-            <ImageButton
-                android:id="@+id/btnBack"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:padding="8dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_arrow_back_24" />
-
-        </com.google.android.material.card.MaterialCardView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
