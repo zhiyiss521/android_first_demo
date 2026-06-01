@@ -92,11 +92,11 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingHorizontal="16dp"
-                    android:paddingVertical="14dp">
+                    android:paddingVertical="18dp">
 
+                    <!-- Likes -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -107,19 +107,22 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="1000"
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
                             android:text='@{String.valueOf(vm.postState.likes)}'
-                            android:textColor="#333333"
+                            android:textColor="#111111"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="Likes"
+                            android:textColor="#888888"
                             android:textSize="12sp" />
 
                     </LinearLayout>
 
+                    <!-- Views -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -130,19 +133,22 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=""
-                            android:textSize="18sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
                             android:text='@{String.valueOf(vm.postState.views)}'
-                            android:textColor="#333333"
+                            android:textColor="#111111"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="Views"
+                            android:textColor="#888888"
                             android:textSize="12sp" />
 
                     </LinearLayout>
 
+                    <!-- Downloads -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -153,18 +159,21 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="⬇"
-                            android:textSize="18sp" />
+                            android:text='@{String.valueOf(vm.postState.downloads)}'
+                            android:textColor="#111111"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text='@{String.valueOf(vm.postState.downloads)}'
-                            android:textColor="#333333"
+                            android:layout_marginTop="6dp"
+                            android:text="Downloads"
+                            android:textColor="#888888"
                             android:textSize="12sp" />
 
                     </LinearLayout>
+
                 </LinearLayout>
 
                 <com.zhiyi.android_first_demo.ui.view.TouchableMapView

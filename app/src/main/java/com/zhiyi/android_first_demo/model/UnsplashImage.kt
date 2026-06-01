@@ -20,7 +20,15 @@ data class UnsplashImage (
     val location:UnsplashLocation?
 )
 
-data class ImageUrls(val regular: String, val small: String,val raw: String,val full: String,val thumb: String,val small_s3: String)
+@Parcelize
+data class ImageUrls(
+    val regular: String,
+    val small: String,
+    val raw: String,
+    val full: String,
+    val thumb: String,
+    val small_s3: String
+): Parcelable
 
 @Parcelize
 data class UnsplashUser(
@@ -47,7 +55,8 @@ data class UnsplashUser(
     val total_promoted_illustrations: Int = 0,
     val accepted_tos: Boolean = false,
     val for_hire: Boolean = false,
-    val social: UnsplashUserSocial?
+    val social: UnsplashUserSocial?,
+    var photos:List<UnsplashPhoto>?
 ): Parcelable
 
 @Parcelize
@@ -91,3 +100,13 @@ data class UnsplashLocationPosition(
     val longitude:Double?,
 )
 
+@Parcelize
+data class UnsplashPhoto(
+    val id: String? = null,
+    val slug: String? = null,
+    val created_at: String? = null,
+    val updated_at: String? = null,
+    val blur_hash: String? = null,
+    val asset_type: String? = null,
+    val urls: ImageUrls? = null
+): Parcelable
