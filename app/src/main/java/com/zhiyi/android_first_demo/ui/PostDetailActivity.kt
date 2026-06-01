@@ -1,7 +1,9 @@
 package com.zhiyi.android_first_demo.ui
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.Icon
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +15,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.zhiyi.android_first_demo.R
 import com.zhiyi.android_first_demo.databinding.ActivityPostDetailBinding
 import com.zhiyi.android_first_demo.model.UnsplashImage
+import com.zhiyi.android_first_demo.ui.activity.UserDetailActivity
 import com.zhiyi.android_first_demo.util.LogUtil
 import com.zhiyi.android_first_demo.viewmodel.DetailVM
 import kotlinx.coroutines.launch
@@ -81,6 +84,19 @@ class PostDetailActivity : AppCompatActivity() {
         binding.detailToolbar.setNavigationOnClickListener {
             finish()
         }
+
+        binding.ivUserAvatar.setOnClickListener{
+            val model = vm.postState.value
+            if(model?.user != null){
+                val intent = Intent(this@PostDetailActivity, UserDetailActivity::class.java).apply {
+                    val user = model.user
+                    LogUtil.d("🚀${user.username}")
+                    putExtra("user_data", user)
+                }
+                startActivity(intent)
+            }
+        }
+
         binding.mapView.getMapAsync { map ->
             map.setStyle("https://api.maptiler.com/maps/streets-v2/style.json?key=x0ic7MgzoJPpWBnKjv4D"){ style ->
 
@@ -117,7 +133,7 @@ class PostDetailActivity : AppCompatActivity() {
         }
 
         map.clear()
-        map.animateCamera( CameraUpdateFactory.newLatLngZoom(targetLocation,14.0), 2000 )
+        map.animateCamera( CameraUpdateFactory.newLatLngZoom(targetLocation,16.0), 2000 )
         val iconFactory = IconFactory.getInstance(this)
 
         Glide.with(this)

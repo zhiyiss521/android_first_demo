@@ -1,8 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    //
     id 'kotlin-kapt'
+    id 'kotlin-parcelize' // 用来model序列化的
 }
 
 android {
@@ -62,6 +62,7 @@ dependencies {
 
     // 5. 图片加载库：Glide
     implementation "com.github.bumptech.glide:glide:4.16.0"
+    implementation 'androidx.activity:activity:1.8.0'
     // 🌟【核心新增】既然开启了 kapt 插件，Glide 的注解处理器也要用 kapt 引入
     kapt "com.github.bumptech.glide:compiler:4.16.0"
 
@@ -73,5 +74,9 @@ dependencies {
     implementation("com.jakewharton.timber:timber:5.0.1")
     // 开源地图库
     implementation 'org.maplibre.gl:android-sdk:11.11.0'
+
+    // 图片模糊的效果
+    implementation 'jp.wasabeef:glide-transformations:4.3.0'
+    implementation 'jp.co.cyberagent.android:gpuimage:2.1.0'
 
 }

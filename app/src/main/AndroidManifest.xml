@@ -20,18 +20,22 @@
         android:theme="@style/Theme.Android_first_demo"
         tools:targetApi="31">
         <activity
+            android:name=".ui.activity.UserDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.PostDetailActivity"
             android:banner="@drawable/app_icon_your_company"
             android:exported="false"
             android:icon="@drawable/app_icon_your_company"
             android:label="@string/title_activity_post_detail"
             android:logo="@drawable/app_icon_your_company"
-            android:theme="@style/Theme.Android_first_demo"></activity>
+            android:theme="@style/Theme.Android_first_demo" />
         <activity
             android:name=".ui.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 

@@ -1,6 +1,7 @@
 package com.zhiyi.android_first_demo.api
 
 import com.zhiyi.android_first_demo.model.UnsplashImage
+import com.zhiyi.android_first_demo.model.UnsplashUser
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -17,5 +18,10 @@ interface ApiService {
     suspend fun getPhotoDetail(
         @Path("id") id: String
     ): UnsplashImage
+
+    @GET("https://api.unsplash.com/users/{username}")
+    suspend fun getUserDetail(
+        @Path("username") id: String
+    ): UnsplashUser
 
 }
