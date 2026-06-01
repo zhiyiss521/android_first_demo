@@ -172,7 +172,7 @@
                 <com.zhiyi.android_first_demo.ui.view.TouchableMapView
                     android:id="@+id/mapView"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="200dp"
                     />
 
                 <!-- Description -->
@@ -210,6 +210,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"
                     app:cardCornerRadius="18dp"
                     app:cardElevation="2dp">
 

@@ -1,20 +1,28 @@
 package com.zhiyi.android_first_demo.ui
 
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.zhiyi.android_first_demo.R
 import com.zhiyi.android_first_demo.databinding.ActivityPostDetailBinding
+import com.zhiyi.android_first_demo.model.UnsplashImage
 import com.zhiyi.android_first_demo.util.LogUtil
 import com.zhiyi.android_first_demo.viewmodel.DetailVM
 import kotlinx.coroutines.launch
 import org.maplibre.android.MapLibre
+import org.maplibre.android.annotations.MarkerOptions
 import org.maplibre.android.camera.CameraPosition
 import org.maplibre.android.camera.CameraUpdateFactory
 import org.maplibre.android.geometry.LatLng
-import org.maplibre.android.maps.MapView
+import org.maplibre.android.maps.MapLibreMap
+import org.maplibre.android.annotations.IconFactory
 
 class PostDetailActivity : AppCompatActivity() {
 
@@ -80,24 +88,12 @@ class PostDetailActivity : AppCompatActivity() {
                 .target(LatLng(0.0,0.0))
                 .zoom(1.0)
                 .build()
-
-
         }
 
         lifecycleScope.launch {
             vm.postState.collect { unsplashImage ->
-                if (unsplashImage?.location?.position != null) {
-                    val lat = unsplashImage?.location?.position.latitude
-                    val lng = unsplashImage?.location?.position.longitude
-                    LogUtil.d("lat:${lat},lng:${lng},name:${unsplashImage?.location?.country}")
-                    val targetLocation = LatLng(lat,lng)
-
-                    binding.mapView.getMapAsync { map ->
-                        map.animateCamera( CameraUpdateFactory.newLatLngZoom(targetLocation,16.0), 2000 )
-
-
-
-                    }
+                binding.mapView.getMapAsync { map ->
+                    loadLocationData(unsplashImage,map)
                 }
             }
         }
@@ -108,6 +104,43 @@ class PostDetailActivity : AppCompatActivity() {
         vm.requestDetail(imageId!!)
     }
 
+    fun loadLocationData(unsplashImage:UnsplashImage?, map:MapLibreMap){
+        val lat = unsplashImage?.location?.position?.latitude.takeIf { it != 0.0 }
+        val lng = unsplashImage?.location?.position?.longitude.takeIf { it != 0.0 }
+        LogUtil.d("🚀lat:${lat},lng:${lng}")
+        val DEFAULT_LOCATION = LatLng(40.6892494, -74.0445004)
+        val targetLocation = if (lat != null && lng != null) {
+            LatLng(lat, lng)
+        } else {
+            DEFAULT_LOCATION
+        }
 
+        map.clear()
+        map.animateCamera( CameraUpdateFactory.newLatLngZoom(targetLocation,14.0), 2000 )
+        val iconFactory = IconFactory.getInstance(this)
 
+        Glide.with(this)
+            .asBitmap()
+            .load(unsplashImage?.urls?.thumb ?: "")
+            .circleCrop()
+            .override(120, 120)
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    map.clear()
+                    map.addMarker(
+                        MarkerOptions()
+                            .position(targetLocation)
+                            .icon(iconFactory.fromBitmap(resource))
+                    )
+                }
+
+                override fun onLoadFailed(errorDrawable: Drawable?) {
+                    map.clear()
+                    map.addMarker(MarkerOptions().position(targetLocation))
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {}
+            })
+
+    }
 }

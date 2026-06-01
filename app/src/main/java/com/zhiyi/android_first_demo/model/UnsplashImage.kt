@@ -81,7 +81,7 @@ data class UnsplashLocation(
 )
 
 data class UnsplashLocationPosition(
-    val latitude:Double,
-    val longitude:Double,
+    val latitude:Double?,
+    val longitude:Double?,
 )
 

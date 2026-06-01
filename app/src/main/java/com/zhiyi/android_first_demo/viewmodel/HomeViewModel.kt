@@ -1,5 +1,6 @@
 package com.zhiyi.android_first_demo.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zhiyi.android_first_demo.api.ApiClient
@@ -41,6 +42,7 @@ class HomeViewModel : ViewModel() {
                 allPostsList.addAll(posts)
                 _postListState.value = ArrayList(allPostsList)
             } catch (e: Exception) {
+                e.message?.let { LogUtil.d(it) };
                 if (!isRefresh && currentPage > 1) {
                     currentPage--
                 }
