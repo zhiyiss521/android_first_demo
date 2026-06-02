@@ -11,7 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.zhiyi.android_first_demo.databinding.FragmentHomeBinding
+import com.zhiyi.android_first_demo.model.UnsplashImage
 import com.zhiyi.android_first_demo.ui.postDetail.PostDetailActivity
+import com.zhiyi.android_first_demo.util.LogUtil
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -30,6 +32,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
+        LogUtil.d("homefragment onviewCreated")
         viewModel.requestList()
     }
 
@@ -49,10 +52,7 @@ class HomeFragment : Fragment() {
         binding!!.recyclerViewList.adapter = postAdapter;
 
         postAdapter.onItemClickListener = { item ->
-            val intent = Intent(requireContext(), PostDetailActivity::class.java).apply {
-                putExtra("image_id", item.id)
-            }
-            startActivity(intent)
+           goDetail(item)
         }
 
         // 下拉加载组件
@@ -76,18 +76,18 @@ class HomeFragment : Fragment() {
             }
         })
 
-        // 监听vm
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.postListState.collectLatest { newList ->
-                // 这里是因为
-                // 监听vm中数据的变化，目前和adapter无关
                 if (newList.isNotEmpty()) {
+                    showContent()
                     postAdapter.updateData(newList)
+                }else{
+                    showEmpty()
                 }
             }
         }
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.refreshingState.collect { isRefreshing ->
                 if (isRefreshing) {
                     // 只有下拉触发时，这里才会有反应
@@ -99,5 +99,26 @@ class HomeFragment : Fragment() {
 
     }
 
+    fun goDetail(item:UnsplashImage){
+        val intent = Intent(requireContext(), PostDetailActivity::class.java).apply {
+            putExtra("image_data", item)
+        }
+        startActivity(intent)
+    }
+
+    private fun showContent() {
+        LogUtil.d("showContent()")
+        binding?.progressBar?.visibility = View.GONE
+        binding?.layoutEmpty?.visibility = View.GONE
+        binding?.swipeRefresh?.visibility = View.VISIBLE
+    }
+
+    private fun showEmpty() {
+        LogUtil.d("showEmpty()")
+
+        binding?.progressBar?.visibility = View.GONE
+        binding?.layoutEmpty?.visibility = View.VISIBLE
+        binding?.swipeRefresh?.visibility = View.GONE
+    }
 
 }

@@ -3,6 +3,7 @@ package com.zhiyi.android_first_demo.model
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class UnsplashImage (
     val id: String,
     val width: Int,
@@ -16,9 +17,9 @@ data class UnsplashImage (
     val views:Int,
     val downloads:Int,
     val liked_by_user:Boolean,
-    val exif:UnsplashExif,
+    val exif:UnsplashExif?,
     val location:UnsplashLocation?
-)
+): Parcelable
 
 @Parcelize
 data class ImageUrls(
@@ -78,6 +79,7 @@ data class UnsplashUserSocial(
     val paypal_email: String?
 ): Parcelable
 
+@Parcelize
 data class UnsplashExif(
      val make:String?,
      val model:String?,
@@ -86,19 +88,21 @@ data class UnsplashExif(
      val aperture:String?,
      val focal_length:String?,
      val iso:Int
-)
+): Parcelable
 
+@Parcelize
 data class UnsplashLocation(
     val city:String?,
     val country:String?,
     val name:String?,
     val position:UnsplashLocationPosition?,
-)
+): Parcelable
 
+@Parcelize
 data class UnsplashLocationPosition(
     val latitude:Double?,
     val longitude:Double?,
-)
+): Parcelable
 
 @Parcelize
 data class UnsplashPhoto(

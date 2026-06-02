@@ -34,7 +34,6 @@ class PostDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         MapLibre.getInstance(this)
 
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_post_detail)
         binding.lifecycleOwner = this
         binding.vm = vm
@@ -115,8 +114,11 @@ class PostDetailActivity : AppCompatActivity() {
     }
 
     fun getData(){
-        var imageId = intent.getStringExtra("image_id")
-        vm.requestDetail(imageId!!)
+        val data = intent.getParcelableExtra<UnsplashImage>("image_data")
+        if (data != null) {
+            vm.initUnsplashImage(data)
+            vm.requestDetail(data.id)
+        }
     }
 
     fun loadLocationData(unsplashImage:UnsplashImage?, map:MapLibreMap){
