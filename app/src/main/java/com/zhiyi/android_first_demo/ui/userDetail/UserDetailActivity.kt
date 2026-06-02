@@ -1,6 +1,5 @@
-package com.zhiyi.android_first_demo.ui.activity
+package com.zhiyi.android_first_demo.ui.userDetail
 
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -13,16 +12,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.appbar.AppBarLayout
 import com.zhiyi.android_first_demo.R
-import com.zhiyi.android_first_demo.databinding.ActivityPostDetailBinding
 import com.zhiyi.android_first_demo.databinding.ActivityUserDetailBinding
 import com.zhiyi.android_first_demo.model.UnsplashUser
-import com.zhiyi.android_first_demo.ui.adapter.PhotoAdapter
 import com.zhiyi.android_first_demo.util.LogUtil
-import com.zhiyi.android_first_demo.viewmodel.DetailVM
-import com.zhiyi.android_first_demo.viewmodel.UserDetailVM
 import kotlinx.coroutines.launch
-import org.maplibre.android.camera.CameraPosition
-import org.maplibre.android.geometry.LatLng
 
 class UserDetailActivity : AppCompatActivity() {
 

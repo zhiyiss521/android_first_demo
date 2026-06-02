@@ -1,9 +1,8 @@
-package com.zhiyi.android_first_demo.ui
+package com.zhiyi.android_first_demo.ui.postDetail
 
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.Icon
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -15,9 +14,8 @@ import com.bumptech.glide.request.transition.Transition
 import com.zhiyi.android_first_demo.R
 import com.zhiyi.android_first_demo.databinding.ActivityPostDetailBinding
 import com.zhiyi.android_first_demo.model.UnsplashImage
-import com.zhiyi.android_first_demo.ui.activity.UserDetailActivity
+import com.zhiyi.android_first_demo.ui.userDetail.UserDetailActivity
 import com.zhiyi.android_first_demo.util.LogUtil
-import com.zhiyi.android_first_demo.viewmodel.DetailVM
 import kotlinx.coroutines.launch
 import org.maplibre.android.MapLibre
 import org.maplibre.android.annotations.MarkerOptions

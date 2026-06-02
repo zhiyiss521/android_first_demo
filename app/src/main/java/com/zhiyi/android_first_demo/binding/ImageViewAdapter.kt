@@ -1,6 +1,5 @@
-package com.zhiyi.android_first_demo.ui
+package com.zhiyi.android_first_demo.binding
 
-import android.content.res.Resources
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide

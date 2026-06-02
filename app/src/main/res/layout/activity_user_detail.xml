@@ -6,7 +6,7 @@
     <data>
         <variable
             name="vm"
-            type="com.zhiyi.android_first_demo.viewmodel.UserDetailVM" />
+            type="com.zhiyi.android_first_demo.ui.userDetail.UserDetailVM" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

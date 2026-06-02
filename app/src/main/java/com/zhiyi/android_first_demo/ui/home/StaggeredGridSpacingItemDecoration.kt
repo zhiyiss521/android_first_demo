@@ -1,15 +1,10 @@
-package com.zhiyi.android_first_demo.ui
+package com.zhiyi.android_first_demo.ui.home
 
 import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
-/**
- * 专门为瀑布流设计的完美间距装饰器
- * @param spanCount 列数（比如 2 列）
- * @param spacingDp 期望的间距大小（单位：像素 px，可以通过 dp2px 转换，这里实验直接用 px 演示）
- */
 class StaggeredGridSpacingItemDecoration(
     private val spanCount: Int,
     private val spacing: Int

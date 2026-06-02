@@ -1,4 +1,4 @@
-package com.zhiyi.android_first_demo.ui
+package com.zhiyi.android_first_demo.ui.home
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +8,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.zhiyi.android_first_demo.R
 import com.zhiyi.android_first_demo.databinding.LayoutItemCellBinding // 假设你的 item 布局叫这个
-import com.zhiyi.android_first_demo.model.ImagePost
 import com.zhiyi.android_first_demo.model.UnsplashImage
-import com.zhiyi.android_first_demo.util.LogUtil
 
 // PostAdapter就是DioAdapter,是具体的子类适配器
 class PostAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

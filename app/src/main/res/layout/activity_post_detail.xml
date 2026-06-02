@@ -5,7 +5,7 @@
 
     <data>
         <import type="android.view.View" />
-        <variable name="vm" type="com.zhiyi.android_first_demo.viewmodel.DetailVM" />
+        <variable name="vm" type="com.zhiyi.android_first_demo.ui.postDetail.DetailVM" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -176,7 +176,7 @@
 
                 </LinearLayout>
 
-                <com.zhiyi.android_first_demo.ui.view.TouchableMapView
+                <com.zhiyi.android_first_demo.ui.postDetail.TouchableMapView
                     android:id="@+id/mapView"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"

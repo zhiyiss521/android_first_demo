@@ -1,34 +1,35 @@
-package com.zhiyi.android_first_demo.ui
+package com.zhiyi.android_first_demo.ui.home
+
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.activity.viewModels
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.zhiyi.android_first_demo.databinding.ActivityHomeBinding
-import com.zhiyi.android_first_demo.util.LogUtil
-import com.zhiyi.android_first_demo.viewmodel.HomeViewModel
+import com.zhiyi.android_first_demo.databinding.FragmentHomeBinding
+import com.zhiyi.android_first_demo.ui.postDetail.PostDetailActivity
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.maplibre.android.MapLibre
-import org.maplibre.android.maps.MapView
 
 // 当我更换接口的时候，我发现activity完全不用改，只是为了给view绑定东西
 // 调用vm的方法，监听vm，赋值给view
-class HomeActivity : AppCompatActivity() {
-    private var binding: ActivityHomeBinding? = null
+class HomeFragment : Fragment() {
+    private var binding: FragmentHomeBinding? = null
     private val viewModel: HomeViewModel by viewModels()
     private val postAdapter = PostAdapter()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        // 这一套都是固定的写法
-        super.onCreate(savedInstanceState)
-        binding = ActivityHomeBinding.inflate( layoutInflater )
-        setContentView(binding!!.root)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = FragmentHomeBinding.inflate( layoutInflater )
+        return binding!!.root
+    }
 
-        initUI();
-        // activity中并没有方法，但是需要调用vm中的方法
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initUI()
         viewModel.requestList()
     }
 
@@ -48,7 +49,7 @@ class HomeActivity : AppCompatActivity() {
         binding!!.recyclerViewList.adapter = postAdapter;
 
         postAdapter.onItemClickListener = { item ->
-            val intent = Intent(this, PostDetailActivity::class.java).apply {
+            val intent = Intent(requireContext(), PostDetailActivity::class.java).apply {
                 putExtra("image_id", item.id)
             }
             startActivity(intent)

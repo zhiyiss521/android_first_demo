@@ -1,9 +1,8 @@
-package com.zhiyi.android_first_demo.viewmodel
+package com.zhiyi.android_first_demo.ui.postDetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.zhiyi.android_first_demo.api.ApiClient
-import com.zhiyi.android_first_demo.model.ImagePost
+import com.zhiyi.android_first_demo.network.ApiClient
 import com.zhiyi.android_first_demo.model.UnsplashImage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

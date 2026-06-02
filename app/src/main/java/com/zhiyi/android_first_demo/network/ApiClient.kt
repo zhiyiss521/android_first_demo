@@ -1,4 +1,4 @@
-package com.zhiyi.android_first_demo.api
+package com.zhiyi.android_first_demo.network
 
 import com.zhiyi.android_first_demo.util.NetworkManager
 

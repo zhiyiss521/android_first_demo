@@ -1,4 +1,4 @@
-package com.zhiyi.android_first_demo.ui.adapter
+package com.zhiyi.android_first_demo.ui.userDetail
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,7 +12,7 @@ class PhotoAdapter : RecyclerView.Adapter<PhotoAdapter.PhotoViewHolder>() {
 
     inner class PhotoViewHolder( val binding: ItemPhotoBinding) : RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder( parent: ViewGroup, viewType: Int): PhotoViewHolder{
+    override fun onCreateViewHolder( parent: ViewGroup, viewType: Int): PhotoViewHolder {
         val binding = ItemPhotoBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,

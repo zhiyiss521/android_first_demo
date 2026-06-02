@@ -1,4 +1,4 @@
-package com.zhiyi.android_first_demo.ui.view
+package com.zhiyi.android_first_demo.ui.postDetail
 
 import android.content.Context
 import android.util.AttributeSet
