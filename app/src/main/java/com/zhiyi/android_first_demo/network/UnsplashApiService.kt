@@ -6,22 +6,22 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface ApiService {
+interface UnsplashApiService {
 
-    @GET("https://api.unsplash.com/photos")
+    @GET("photos")
     suspend fun getPhotos(
         @Query("page") page: Int = 1,
         @Query("per_page") perPage: Int = 20,
     ): List<UnsplashImage>
 
-    @GET("https://api.unsplash.com/photos/{id}")
+    @GET("photos/{id}")
     suspend fun getPhotoDetail(
         @Path("id") id: String
     ): UnsplashImage
 
-    @GET("https://api.unsplash.com/users/{username}")
+    @GET("users/{username}")
     suspend fun getUserDetail(
-        @Path("username") id: String
+        @Path("username") username: String
     ): UnsplashUser
 
 }

@@ -34,7 +34,7 @@ class HomeViewModel : ViewModel() {
         viewModelScope.launch {
             _refreshingState.value = true
             try {
-                val posts = ApiClient.apiService.getPhotos(currentPage)
+                val posts = ApiClient.unsplashService.getPhotos(currentPage)
                 if(isRefresh){
                     allPostsList.clear()
                 }
@@ -53,5 +53,18 @@ class HomeViewModel : ViewModel() {
         }
     }
 
+
+    fun requestNews() {
+
+        viewModelScope.launch {
+            try {
+                val posts = ApiClient.gNewsService.searchNews("wwdc")
+                LogUtil.d("请求成功")
+            } catch (e: Exception) {
+                LogUtil.d("请求失败")
+                e.message?.let { LogUtil.d(it) };
+            }
+        }
+    }
 
 }

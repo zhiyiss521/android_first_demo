@@ -21,7 +21,7 @@ class DetailVM : ViewModel() {
     fun requestDetail(id:String) {
         viewModelScope.launch {
             try {
-                val posts = ApiClient.apiService.getPhotoDetail(id)
+                val posts = ApiClient.unsplashService.getPhotoDetail(id)
                 _postState.value = posts
             } catch (e: Exception) {
                 e.printStackTrace()

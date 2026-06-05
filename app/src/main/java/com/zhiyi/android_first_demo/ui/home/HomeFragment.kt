@@ -33,7 +33,8 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initUI()
         LogUtil.d("homefragment onviewCreated")
-        viewModel.requestList()
+//        viewModel.requestList()
+        viewModel.requestNews()
     }
 
     fun initUI(){

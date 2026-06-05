@@ -11,8 +11,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
+//
 // Retrofit,底层是okHttpClient
-object NetworkManager {
+// object 就是单例，createService就像类方法一样，可直接NetworkManager.createService调用
+object NetworkManager1 {
 
     private val okHttpClient: OkHttpClient by lazy {
 
@@ -67,13 +69,115 @@ object NetworkManager {
             .build()
     }
 
-    fun <T> createService(baseUrl: String, serviceClass: Class<T>): T {
+    fun <T> createService(
+        baseUrl: String,
+        serviceClass: Class<T>,
+        customHeaders: Map<String, String>? = null
+    ): T {
+        val clientBuilder = okHttpClient.newBuilder()
+        if (!customHeaders.isNullOrEmpty()) {
+            clientBuilder.addInterceptor { chain ->
+                val requestBuilder = chain.request().newBuilder()
+
+                // 遍历 Map，把所有的自定义 Header 塞进去
+                customHeaders.forEach { (key, value) ->
+                    requestBuilder.header(key, value) // 使用 header() 自动覆盖，更安全
+                }
+
+                chain.proceed(requestBuilder.build())
+            }
+        }
+
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
-            .client(okHttpClient)
+            .client(clientBuilder.build())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         return retrofit.create(serviceClass)
+    }
+}
+
+object NetworkManager {
+
+    private val threadLocalLog = ThreadLocal<LogModel>()
+
+    private val loggingInterceptor: HttpLoggingInterceptor by lazy {
+        HttpLoggingInterceptor { message ->
+            val msg = message.trim()
+
+            // 从当前线程的保险箱里拿数据，没有就初始化一个
+            val logModel = threadLocalLog.get() ?: LogModel().also { threadLocalLog.set(it) }
+
+            when {
+                msg.startsWith("--> GET") || msg.startsWith("--> POST") -> {
+                    logModel.url = msg.substringAfter("--> GET ").substringAfter("--> POST ")
+                }
+                msg.startsWith("<-- ") && !msg.contains("END HTTP") -> {
+                    logModel.status = msg.substringAfter("<-- ").substringBefore(" ")
+                }
+                msg.startsWith("{") || msg.startsWith("[") -> {
+                    val prettyJson = try {
+                        if (msg.startsWith("{")) JSONObject(msg).toString(4) else JSONArray(msg).toString(4)
+                    } catch (e: Exception) {
+                        msg
+                    }
+                    val finalLog = "[URL]: ${logModel.url}\n[status]: ${logModel.status}\n[response]:\n$prettyJson"
+                    LogUtil.d(finalLog)
+
+                    // 关键：打印完清理保险箱，防止内存泄漏
+                    threadLocalLog.remove()
+                }
+                msg.startsWith("<-- HTTP FAILED") -> {
+                    LogUtil.d("[URL]: ${logModel.url} [status]: FAILED  [response]: ${msg.substringAfter("FAILED: ")}")
+                    threadLocalLog.remove()
+                }
+            }
+        }.apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+    }
+
+    private val baseOkHttpClient: OkHttpClient by lazy {
+        OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
+    }
+
+    fun <T> createService(
+        baseUrl: String,
+        serviceClass: Class<T>,
+        customHeaders: Map<String, String>? = null,
+        connectTimeout: Long = 10,
+        readTimeout: Long = 10
+    ): T {
+        val clientBuilder = baseOkHttpClient.newBuilder()
+            .connectTimeout(connectTimeout, TimeUnit.SECONDS) // 支持外面自定义超时
+            .readTimeout(readTimeout, TimeUnit.SECONDS)       // 支持外面自定义超时
+            .writeTimeout(readTimeout, TimeUnit.SECONDS)
+
+        clientBuilder.addInterceptor { chain ->
+            val requestBuilder = chain.request().newBuilder()
+
+            requestBuilder.header("Content-Type", "application/json")
+
+            customHeaders?.forEach { (key, value) ->
+                requestBuilder.header(key, value)
+            }
+
+            chain.proceed(requestBuilder.build())
+        }
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(clientBuilder.build())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        return retrofit.create(serviceClass)
+    }
+
+    private class LogModel {
+        var url: String = ""
+        var status: String = ""
     }
 }

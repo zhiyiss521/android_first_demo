@@ -20,7 +20,7 @@ class UserDetailVM : ViewModel() {
     fun requestUserDetail(username:String) {
         viewModelScope.launch {
             try {
-                val user = ApiClient.apiService.getUserDetail(username)
+                val user = ApiClient.unsplashService.getUserDetail(username)
                 _userState.value = user
             } catch (e: Exception) {
                 e.printStackTrace()
