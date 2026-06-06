@@ -100,39 +100,9 @@ object NetworkManager1 {
 
 object NetworkManager {
 
-    private val threadLocalLog = ThreadLocal<LogModel>()
-
     private val loggingInterceptor: HttpLoggingInterceptor by lazy {
         HttpLoggingInterceptor { message ->
-            val msg = message.trim()
-
-            // 从当前线程的保险箱里拿数据，没有就初始化一个
-            val logModel = threadLocalLog.get() ?: LogModel().also { threadLocalLog.set(it) }
-
-            when {
-                msg.startsWith("--> GET") || msg.startsWith("--> POST") -> {
-                    logModel.url = msg.substringAfter("--> GET ").substringAfter("--> POST ")
-                }
-                msg.startsWith("<-- ") && !msg.contains("END HTTP") -> {
-                    logModel.status = msg.substringAfter("<-- ").substringBefore(" ")
-                }
-                msg.startsWith("{") || msg.startsWith("[") -> {
-                    val prettyJson = try {
-                        if (msg.startsWith("{")) JSONObject(msg).toString(4) else JSONArray(msg).toString(4)
-                    } catch (e: Exception) {
-                        msg
-                    }
-                    val finalLog = "[URL]: ${logModel.url}\n[status]: ${logModel.status}\n[response]:\n$prettyJson"
-                    LogUtil.d(finalLog)
-
-                    // 关键：打印完清理保险箱，防止内存泄漏
-                    threadLocalLog.remove()
-                }
-                msg.startsWith("<-- HTTP FAILED") -> {
-                    LogUtil.d("[URL]: ${logModel.url} [status]: FAILED  [response]: ${msg.substringAfter("FAILED: ")}")
-                    threadLocalLog.remove()
-                }
-            }
+            LogUtil.d(message)
         }.apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
@@ -140,7 +110,6 @@ object NetworkManager {
 
     private val baseOkHttpClient: OkHttpClient by lazy {
         OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
             .build()
     }
 
@@ -148,13 +117,10 @@ object NetworkManager {
         baseUrl: String,
         serviceClass: Class<T>,
         customHeaders: Map<String, String>? = null,
-        connectTimeout: Long = 10,
-        readTimeout: Long = 10
+        timeout: Long = 30,
     ): T {
         val clientBuilder = baseOkHttpClient.newBuilder()
-            .connectTimeout(connectTimeout, TimeUnit.SECONDS) // 支持外面自定义超时
-            .readTimeout(readTimeout, TimeUnit.SECONDS)       // 支持外面自定义超时
-            .writeTimeout(readTimeout, TimeUnit.SECONDS)
+            .callTimeout(timeout,TimeUnit.SECONDS)
 
         clientBuilder.addInterceptor { chain ->
             val requestBuilder = chain.request().newBuilder()
@@ -168,6 +134,8 @@ object NetworkManager {
             chain.proceed(requestBuilder.build())
         }
 
+        clientBuilder.addInterceptor(loggingInterceptor)
+
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(clientBuilder.build())
@@ -176,8 +144,4 @@ object NetworkManager {
         return retrofit.create(serviceClass)
     }
 
-    private class LogModel {
-        var url: String = ""
-        var status: String = ""
-    }
 }

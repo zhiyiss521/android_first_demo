@@ -1,4 +1,4 @@
-package com.zhiyi.android_first_demo.ui.home
+package com.zhiyi.android_first_demo.ui.baseList
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +11,9 @@ import com.zhiyi.android_first_demo.databinding.LayoutItemCellBinding // 假设�
 import com.zhiyi.android_first_demo.model.UnsplashImage
 
 // PostAdapter就是DioAdapter,是具体的子类适配器
-class PostAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class BaseListCellAdapter(
+    private val dataType: ListDataType // 子类独有的属性
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class FooterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -28,20 +30,18 @@ class PostAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             Glide.with(binding.root.context)
                 .load(model.urls.small)
-//                .placeholder(R.color.darker_gray)
                 .into(binding.image)
 
             Glide.with(binding.root.context)
                 .load(model.user.profile_image?.small)
-//                .placeholder(R.color.darker_gray)
                 .into(binding.imageVUserAvatar)
 
         }
     }
 
-    var dataList = mutableListOf<UnsplashImage>()
+    var dataList = mutableListOf<Any>()
 
-    fun updateData(newData: List<UnsplashImage>) {
+    fun updateData(newData: List<Any>) {
         val oldSize = dataList.size
         val newSize = newData.size
 
@@ -59,43 +59,52 @@ class PostAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-       if (viewType == TYPE_FOOTER) {
-           val view = inflater.inflate(R.layout.item_list_footer, parent, false)
-           return FooterViewHolder(view)
-        } else {
-            // 固定套路
-            val binding = LayoutItemCellBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            return PostViewHolder(binding)
+        return when (viewType) {
+            TYPE_FOOTER -> {
+                val view = inflater.inflate(R.layout.item_list_footer, parent, false)
+                FooterViewHolder(view)
+            }
+
+            ListDataType.UnsplashImage.ordinal -> {
+                val binding = LayoutItemCellBinding.inflate(inflater, parent, false)
+                PostViewHolder(binding)
+            }
+//            ListDataType.MANGA.ordinal -> {
+//                val binding = LayoutItemMangaBinding.inflate(inflater, parent, false)
+//                MangaViewHolder(binding)
+//            }
+            else -> throw IllegalArgumentException("未知的布局类型，请检查 ListDataType 枚举")
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is FooterViewHolder) {
-            // 🌟 关键：因为是瀑布流，底部的加载栏如果只占一列会极丑。
-            // 我们需要强行设置它的 LayoutParams，让它撑满全宽（横跨两列）
             val layoutParams = holder.itemView.layoutParams
             if (layoutParams is StaggeredGridLayoutManager.LayoutParams) {
                 layoutParams.isFullSpan = true
             }
-        } else if (holder is PostViewHolder){
+        } else {
             val item = dataList[position]
-            holder.binding.root.setOnClickListener {
+            holder.itemView.setOnClickListener {
                 onItemClickListener?.invoke(item)
             }
-            holder.setModel(dataList[position])
+
+            when (holder) {
+                is PostViewHolder -> holder.setModel(item as com.zhiyi.android_first_demo.model.UnsplashImage)
+//                is MangaViewHolder -> holder.setModel(item as com.zhiyi.android_first_demo.model.MangaItem)
+            }
         }
     }
 
-    var onItemClickListener: ((UnsplashImage) -> Unit)? = null
 
+    var onItemClickListener: ((Any) -> Unit)? = null
 
     override fun getItemCount(): Int {
         return if (dataList.isEmpty()) 0 else dataList.size + 1
     }
 
-    private val TYPE_ITEM = 0
-    private val TYPE_FOOTER = 1
+    private val TYPE_FOOTER = -1
     override fun getItemViewType(position: Int): Int {
-        return if (position == dataList.size) TYPE_FOOTER else TYPE_ITEM
+        return if (position == dataList.size) TYPE_FOOTER else dataType.ordinal
     }
 }

@@ -1,4 +1,4 @@
-package com.zhiyi.android_first_demo.ui.home
+package com.zhiyi.android_first_demo.ui.baseList
 
 import android.graphics.Rect
 import android.view.View

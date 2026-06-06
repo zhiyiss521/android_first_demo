@@ -28,13 +28,12 @@ object ApiClient {
             baseUrl = NEWS_BASE_URL,
             serviceClass = NewsApiService::class.java,
             customHeaders = newsHeaders,
-            connectTimeout = 15
         )
     }
 
     private const val GNEWS_BASE_URL = "https://gnews.io/"
     private val gnewsHeaders = mapOf(
-        "X-ACCESS-KEY" to "pub_561ee9249c624ea1b3b186e27a25ed59"
+        "X-Api-Key" to "bc95b89f989b3b87a663bdf086645e42"
     )
 
     val gNewsService: GNewsApiService by lazy {
@@ -42,6 +41,23 @@ object ApiClient {
             baseUrl = GNEWS_BASE_URL,
             serviceClass = GNewsApiService::class.java,
             customHeaders = gnewsHeaders,
+        )
+    }
+
+    private const val HAN_BASE_URL = "https://api.zhihu.com/"
+
+    val hanService: ZhihuApiService by lazy {
+        NetworkManager.createService(
+            baseUrl = HAN_BASE_URL,
+            serviceClass = ZhihuApiService::class.java,
+        )
+    }
+
+
+    val mangaService: MangaApiService by lazy {
+        NetworkManager.createService(
+            baseUrl = "https://api.jikan.moe/",
+            serviceClass = MangaApiService::class.java,
         )
     }
 

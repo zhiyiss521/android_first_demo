@@ -1,4 +1,4 @@
-package com.zhiyi.android_first_demo.ui.home
+package com.zhiyi.android_first_demo.ui.baseList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,20 +11,20 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 // vm中没有view，只有data和改变data的函数，
-class HomeViewModel : ViewModel() {
+class BaseListViewModel : ViewModel() {
 
     // 理解为固定套路好了，就是一个List<Post>的包装类
-    private val _postListState = MutableStateFlow<List<UnsplashImage>>(emptyList())
-    val postListState: StateFlow<List<UnsplashImage>> = _postListState
+    private val _dataListState = MutableStateFlow<List<Any>>(emptyList())
+    val dataListState: StateFlow<List<Any>> = _dataListState
 
     // 控制是否加载中的状态
     private val _refreshingState = MutableStateFlow(false)
     val refreshingState = _refreshingState.asStateFlow()
 
     private var currentPage = 1
-    private val allPostsList = mutableListOf<UnsplashImage>()
+    private val allPostsList = mutableListOf<Any>()
 
-    fun requestList(isRefresh: Boolean = true) {
+    fun requestList(dataType: ListDataType,isRefresh: Boolean = true) {
         if(isRefresh){
             currentPage = 1
         }else{
@@ -34,12 +34,22 @@ class HomeViewModel : ViewModel() {
         viewModelScope.launch {
             _refreshingState.value = true
             try {
-                val posts = ApiClient.unsplashService.getPhotos(currentPage)
+                val data: List<Any> = when (dataType) {
+                    ListDataType.UnsplashImage -> {
+                        ApiClient.unsplashService.getPhotos(currentPage)
+                    }
+                    ListDataType.MANGA -> {
+                        emptyList() // 暂时占位，等你补齐
+                    }
+                    ListDataType.GAMES -> {
+                        emptyList() // 暂时占位，等你补齐
+                    }
+                }
                 if(isRefresh){
                     allPostsList.clear()
                 }
-                allPostsList.addAll(posts)
-                _postListState.value = ArrayList(allPostsList)
+                allPostsList.addAll(data)
+                _dataListState.value = ArrayList(allPostsList)
             } catch (e: Exception) {
                 e.message?.let { LogUtil.d(it) };
                 if (!isRefresh && currentPage > 1) {
@@ -49,20 +59,6 @@ class HomeViewModel : ViewModel() {
             }finally {
                 LogUtil.d("vm中刷新状态改变了")
                 _refreshingState.value = false
-            }
-        }
-    }
-
-
-    fun requestNews() {
-
-        viewModelScope.launch {
-            try {
-                val posts = ApiClient.gNewsService.searchNews("wwdc")
-                LogUtil.d("请求成功")
-            } catch (e: Exception) {
-                LogUtil.d("请求失败")
-                e.message?.let { LogUtil.d(it) };
             }
         }
     }

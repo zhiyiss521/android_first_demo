@@ -3,6 +3,7 @@ package com.zhiyi.android_first_demo.model
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
+// 这个东西是为了传参的时候，传一个对象进去，必须可序列化，这是Android自带的
 @Parcelize
 data class UnsplashImage (
     val id: String,
