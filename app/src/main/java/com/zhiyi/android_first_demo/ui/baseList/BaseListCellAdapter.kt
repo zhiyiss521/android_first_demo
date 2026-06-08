@@ -7,7 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.zhiyi.android_first_demo.R
-import com.zhiyi.android_first_demo.databinding.LayoutItemCellBinding // 假设你的 item 布局叫这个
+import com.zhiyi.android_first_demo.databinding.BaseListCellMangaBinding
+import com.zhiyi.android_first_demo.databinding.BaseListCellUnsplashBinding
+import com.zhiyi.android_first_demo.model.MangaImages
+import com.zhiyi.android_first_demo.model.MangaItem
 import com.zhiyi.android_first_demo.model.UnsplashImage
 
 // PostAdapter就是DioAdapter,是具体的子类适配器
@@ -17,7 +20,7 @@ class BaseListCellAdapter(
 
     class FooterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    class PostViewHolder(val binding: LayoutItemCellBinding) : RecyclerView.ViewHolder(binding.root) {
+    class PostViewHolder(val binding: BaseListCellUnsplashBinding) : RecyclerView.ViewHolder(binding.root) {
         fun setModel(model: UnsplashImage) {
             binding.tvDesc.text = "${model.alt_description}"
             binding.tvUserNickname.text = model.user.username
@@ -35,6 +38,24 @@ class BaseListCellAdapter(
             Glide.with(binding.root.context)
                 .load(model.user.profile_image?.small)
                 .into(binding.imageVUserAvatar)
+
+        }
+    }
+
+    class MangaViewHolder(val binding: BaseListCellMangaBinding) : RecyclerView.ViewHolder(binding.root) {
+//        val url: String?,                         // 漫画在平台的详情页网页链接
+//        val title: String = "",                   // 默认英文/罗马音标题（如 "Berserk"）
+//        val synopsis: String?,                    // 漫画剧情简介、导语
+//        val images: MangaImages?,                 // 各种规格的封面图片集合
+//        val type: String?,                        // 类别：Manga(漫画), Novel(小说), Doujinshi(同人志)
+//        val chapters: Int?,                       // 总话数（如果完结了的话）
+//        val score: Double?                        // 全球二次元漫迷给出的评分（例如 9.47）
+        fun setModel(model: MangaItem) {
+            binding.tvDesc.text = "${model.title}"
+            Glide.with(binding.root.context)
+                .load(model.images?.webp?.imageUrl)
+                .into(binding.image)
+
 
         }
     }
@@ -66,13 +87,13 @@ class BaseListCellAdapter(
             }
 
             ListDataType.UnsplashImage.ordinal -> {
-                val binding = LayoutItemCellBinding.inflate(inflater, parent, false)
+                val binding = BaseListCellUnsplashBinding.inflate(inflater, parent, false)
                 PostViewHolder(binding)
             }
-//            ListDataType.MANGA.ordinal -> {
-//                val binding = LayoutItemMangaBinding.inflate(inflater, parent, false)
-//                MangaViewHolder(binding)
-//            }
+            ListDataType.MANGA.ordinal -> {
+                val binding = BaseListCellMangaBinding.inflate(inflater, parent, false)
+                MangaViewHolder(binding)
+            }
             else -> throw IllegalArgumentException("未知的布局类型，请检查 ListDataType 枚举")
         }
     }
@@ -91,7 +112,7 @@ class BaseListCellAdapter(
 
             when (holder) {
                 is PostViewHolder -> holder.setModel(item as com.zhiyi.android_first_demo.model.UnsplashImage)
-//                is MangaViewHolder -> holder.setModel(item as com.zhiyi.android_first_demo.model.MangaItem)
+                is MangaViewHolder -> holder.setModel(item as MangaItem)
             }
         }
     }

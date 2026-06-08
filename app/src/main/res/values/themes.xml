@@ -24,5 +24,9 @@
 
     <!-- 原型的style-->
     <style name="CircleImageStyle"><item name="cornerSize">50%</item></style>
+    <style name="RoundedCornersImage" parent="">
+        <item name="cornerSize">8dp</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
 
 </resources>

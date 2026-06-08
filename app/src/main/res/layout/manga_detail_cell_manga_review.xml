@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://tools.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp"
+    app:strokeWidth="0dp"
+    app:cardBackgroundColor="@android:color/white">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivReviewAvatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/CircleImageStyle"
+            tools:background="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/tvReviewUserName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textColor="#212121"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/tvReviewScore"
+            app:layout_constraintStart_toEndOf="@id/ivReviewAvatar"
+            app:layout_constraintTop_toTopOf="@id/ivReviewAvatar"
+            tools:text="AnimeLover99" />
+
+        <TextView
+            android:id="@+id/tvReviewDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="#9E9E9E"
+            android:textSize="11sp"
+            app:layout_constraintStart_toStartOf="@id/tvReviewUserName"
+            app:layout_constraintTop_toBottomOf="@id/tvReviewUserName"
+            tools:text="2026-05-20" />
+
+        <TextView
+            android:id="@+id/tvReviewScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#FFF9C4"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:textColor="#F57F17"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ivReviewAvatar"
+            tools:text="★ 9" />
+
+        <TextView
+            android:id="@+id/tvReviewContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="#424242"
+            android:textSize="13sp"
+            android:lineSpacingMultiplier="1.2"
+            android:maxLines="5"
+            android:ellipsize="end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivReviewAvatar"
+            tools:text="This manga is an absolute masterpiece. The character development of the protagonist over the chapters is incredible, and the art style evolves beautifully..." />
+
+        <View
+            android:id="@+id/vReviewDivider"
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="12dp"
+            android:background="#E0E0E0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvReviewContent" />
+
+        <TextView
+            android:id="@+id/tvReviewLikeCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:textColor="#757575"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vReviewDivider"
+            tools:text="👍 124 人觉得很赞" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

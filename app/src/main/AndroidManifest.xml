@@ -20,10 +20,14 @@
         android:theme="@style/Theme.Android_first_demo"
         tools:targetApi="31">
         <activity
+            android:name=".ui.mangaDetail.MangaDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

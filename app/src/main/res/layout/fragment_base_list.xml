@@ -16,7 +16,7 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:paddingBottom="24dp"
-            tools:listitem="@layout/layout_item_cell" />
+            tools:listitem="@layout/base_list_cell_unsplash" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

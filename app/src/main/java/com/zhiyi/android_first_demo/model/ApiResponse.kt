@@ -78,3 +78,125 @@ data class MangaImageUrls(
     @SerializedName("small_image_url") val smallImageUrl: String,  // 缩略小图
     @SerializedName("large_image_url") val largeImageUrl: String   // 高清大图（放列表里这个最清晰）
 )
+
+data class MangaFullDetailsResponse(
+    val data: MangaFullDetails
+)
+
+data class MangaFullDetails(
+    val mal_id: Int,
+    val url: String,
+    val images: MangaImages,
+    val approved: Boolean,
+    val titles: List<MangaTitle>,
+    val title: String,
+    val title_english: String?,
+    val title_japanese: String?,
+    val title_synonyms: List<String>,
+    val type: String,
+    val chapters: Int?,
+    val volumes: Int?,
+    val status: String,
+    val publishing: Boolean,
+    val published: PublishedPeriod,
+    val score: Double?,
+    val scored: Double?,
+    val scored_by: Int?,
+    val rank: Int?,
+    val popularity: Int?,
+    val members: Int?,
+    val favorites: Int?,
+    val synopsis: String?,
+    val background: String?,
+    val authors: List<MangaNode>,
+    val serializations: List<MangaNode>,
+    val genres: List<MangaNode>,
+    val explicit_genres: List<MangaNode>,
+    val themes: List<MangaNode>,
+    val demographics: List<MangaNode>,
+    val relations: List<MangaRelation>, // 关联作品（如：前作、续作、动画化衍生）
+    val external: List<MangaExternalLink> // 核心：外部链接（包含看漫画的正版官方渠道！）
+)
+
+data class MangaNode(
+    val mal_id: Int,
+    val type: String,
+    val name: String,
+    val url: String
+)
+
+data class MangaTitle(
+    val type: String, // "Default", "Japanese", "English" 等
+    val title: String
+)
+
+data class PublishedPeriod(
+    val from: String?,
+    val to: String?,
+    val string: String? // 可直接用于 UI 显示的格式化时间字符串，例如 "Jul 22, 1997 to ?"
+)
+
+data class MangaRelation(
+    val relation: String, // 关系类型，例如 "Adaptation", "Side story"
+    val entry: List<MangaNode>
+)
+
+data class MangaExternalLink(
+    val name: String, // 网站名字，例如 "Official Site", "Wikipedia", "Manga Plus"
+    val url: String  // 跳转的 H5 链接
+)
+
+data class MangaReviewsResponse(
+    val data: List<MangaReviewItem>
+)
+
+data class MangaReviewItem(
+    val mal_id: Int,
+    val url: String,
+    val type: String,
+    val reactions: ReviewReactions, // 点赞、觉得有用的数量
+    val date: String,             // 评论日期 (ISO8601 格式)
+    val review: String,           // 核心：评论的长文本内容
+    val score: Int,               // 用户给出的综合评分
+    val is_spoiler: Boolean,      // 是否剧透（UI上可以做模糊或者警告提示）
+    val user: ReviewUser          // 评论者用户信息
+)
+
+data class ReviewUser(
+    val username: String,
+    val url: String,
+    val images: UserImages
+)
+
+data class UserImages(
+    val jpg: UserImageSet
+)
+
+data class UserImageSet(
+    val image_url: String // 用户头像 URL
+)
+
+data class ReviewReactions(
+    val overall: Int,      // 总互动数
+    val nice: Int,         // 觉得很赞的数量
+    val love_it: Int,      // 喜欢的数量
+    val funny: Int         // 觉得搞笑的数量
+)
+
+data class MangaRecommendationsResponse(
+    val data: List<MangaRecommendationItem>
+)
+
+data class MangaRecommendationItem(
+    val entry: RecommendedMangaEntry, // 被推荐的漫画简要信息
+    val url: String,
+    val votes: Int,                   // 有多少网友赞同这个推荐
+    val context: String?               // 推荐原因/为什么推荐（例如："如果你喜欢热血和冒险，你一定不能错过这部..."）
+)
+
+data class RecommendedMangaEntry(
+    val mal_id: Int,
+    val url: String,
+    val images: MangaImages, // 直接复用你列表页和详情页定义好的 MangaImages
+    val title: String
+)

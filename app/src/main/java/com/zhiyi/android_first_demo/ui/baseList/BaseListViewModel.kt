@@ -34,17 +34,16 @@ class BaseListViewModel : ViewModel() {
         viewModelScope.launch {
             _refreshingState.value = true
             try {
-                val data: List<Any> = when (dataType) {
-                    ListDataType.UnsplashImage -> {
-                        ApiClient.unsplashService.getPhotos(currentPage)
-                    }
-                    ListDataType.MANGA -> {
-                        emptyList() // 暂时占位，等你补齐
-                    }
-                    ListDataType.GAMES -> {
-                        emptyList() // 暂时占位，等你补齐
-                    }
+                var data: List<Any> =  emptyList()
+                if(dataType == ListDataType.UnsplashImage){
+                   data = ApiClient.unsplashService.getPhotos(currentPage)
+                }else if(dataType == ListDataType.MANGA){
+                    var ret = ApiClient.mangaService.getTopManga(currentPage)
+                   data = ret.data
+                }else if(dataType == ListDataType.GAMES){
+
                 }
+
                 if(isRefresh){
                     allPostsList.clear()
                 }
