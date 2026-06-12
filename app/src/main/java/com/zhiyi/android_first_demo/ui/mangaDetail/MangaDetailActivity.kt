@@ -37,8 +37,28 @@ class MangaDetailActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.toolbar.setNavigationOnClickListener { finish() }
-        binding.toolbar.title = ""
-        
+
+// 🔥 关键点 1：一进来，先关闭系统自带的默认标题显示
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        val initialTi = intent.getStringExtra("manga_title") ?: "Manga Detail"
+
+// 🔥 关键点 2：把标题塞给外层的 CollapsingToolbarLayout，而不是内层的 Toolbar
+        binding.collapsingToolbar.title = initialTi
+
+// 2. 监听折叠状态
+        binding.appBarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
+            val isCollapsed = Math.abs(verticalOffset) >= appBarLayout.totalScrollRange
+
+            if (isCollapsed) {
+                // 🔥 完全折叠：让 CollapsingToolbarLayout 显示文字（把文字颜色改回白色）
+                binding.collapsingToolbar.setCollapsedTitleTextColor(android.graphics.Color.WHITE)
+            } else {
+                // 🔥 展开状态：让它的文字变成透明（视觉上隐身），把舞台留给下面的 tvMangaTitle
+                binding.collapsingToolbar.setCollapsedTitleTextColor(android.graphics.Color.TRANSPARENT)
+            }
+        }
+
         // 2. 接收列表页传过来的唯一漫画 ID
         mangaId = intent.getIntExtra("manga_id", -1)
         if (mangaId == -1) {

@@ -4,6 +4,7 @@ import com.zhiyi.android_first_demo.util.NetworkManager
 
 object ApiClient {
 
+    // tupian
     private const val UNSPLASH_BASE_URL = "https://api.unsplash.com/"
     private val unsplashHeaders = mapOf(
         "Authorization" to "Client-ID -sncfr6j20Nw3vWh5vY2JSAti-AS-X3d1OKoHk9pgJo"
@@ -54,6 +55,7 @@ object ApiClient {
     }
 
 
+    // 漫画
     val mangaService: MangaApiService by lazy {
         NetworkManager.createService(
             baseUrl = "https://api.jikan.moe/",
@@ -61,4 +63,21 @@ object ApiClient {
         )
     }
 
+    // 漫画
+    val rawgService: RawgApiService by lazy {
+        NetworkManager.createService(
+            baseUrl = "https://api.rawg.io/api/",
+            serviceClass = RawgApiService::class.java,
+            customHeaders = mapOf(
+                "key" to "fa598b1c8da5455790299d6b4b8ecbe4"
+            )
+        )
+    }
+
+    val steamService: SteamApiService by lazy {
+        NetworkManager.createService(
+            baseUrl = "https://store.steampowered.com/api/",
+            serviceClass = SteamApiService::class.java
+        )
+    }
 }

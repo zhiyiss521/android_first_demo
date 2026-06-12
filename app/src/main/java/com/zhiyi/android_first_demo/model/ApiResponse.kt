@@ -200,3 +200,110 @@ data class RecommendedMangaEntry(
     val images: MangaImages, // 直接复用你列表页和详情页定义好的 MangaImages
     val title: String
 )
+
+// region  rawg
+data class GamesResponse(
+    val count: Int,
+    val next: String?,
+    val previous: String?,
+    val results: List<Game>
+)
+
+data class Game(
+    val id: Int,
+    val name: String,
+    val released: String?,
+    val background_image: String?,
+    val rating: Double,
+    val metacritic: Int?,
+    val ratings_count: Int
+)
+
+data class GameDetailResponse(
+    val id: Int,
+    val name: String,
+    val description_raw: String?,
+    val released: String?,
+    val background_image: String?,
+    val rating: Double,
+    val metacritic: Int?,
+    val website: String?,
+    val developers: List<Developer>,
+    val genres: List<Genre>,
+    val publishers: List<Publisher>
+)
+
+data class Developer(
+    val id: Int,
+    val name: String
+)
+
+data class Genre(
+    val id: Int,
+    val name: String
+)
+
+data class Publisher(
+    val id: Int,
+    val name: String
+)
+
+data class ScreenshotsResponse(
+    val count: Int,
+    val results: List<Screenshot>
+)
+
+data class Screenshot(
+    val id: Int,
+    val image: String
+)
+//endregion
+
+//region Steam
+
+data class SteamHome(
+    val specials: SteamSection?,
+)
+
+data class SteamSection(
+    val id: String?,
+    val name: String?,
+    val items: List<SteamGameItem>?
+)
+
+data class SteamGameItem(
+
+    val id: Long?,
+
+    val name: String?,
+
+    val header_image: String?,
+
+    val large_capsule_image: String?,
+
+    val small_capsule_image: String?,
+
+    val discount_percent: Int?,
+
+    val original_price: Long?,
+
+    val final_price: Long?,
+
+    val headline: String?,
+
+    val body: String?,
+
+    val url: String?,
+
+    val windows_available: Boolean?,
+
+    val mac_available: Boolean?,
+
+    val linux_available: Boolean?,
+
+    val controller_support: String?,
+
+    val discount_expiration: Long?
+)
+
+//endregion

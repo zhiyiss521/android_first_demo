@@ -9,8 +9,11 @@ import com.bumptech.glide.Glide
 import com.zhiyi.android_first_demo.R
 import com.zhiyi.android_first_demo.databinding.BaseListCellMangaBinding
 import com.zhiyi.android_first_demo.databinding.BaseListCellUnsplashBinding
+import com.zhiyi.android_first_demo.databinding.BaseListCelllRwagBinding
+import com.zhiyi.android_first_demo.model.Game
 import com.zhiyi.android_first_demo.model.MangaImages
 import com.zhiyi.android_first_demo.model.MangaItem
+import com.zhiyi.android_first_demo.model.SteamGameItem
 import com.zhiyi.android_first_demo.model.UnsplashImage
 
 // PostAdapter就是DioAdapter,是具体的子类适配器
@@ -43,20 +46,68 @@ class BaseListCellAdapter(
     }
 
     class MangaViewHolder(val binding: BaseListCellMangaBinding) : RecyclerView.ViewHolder(binding.root) {
-//        val url: String?,                         // 漫画在平台的详情页网页链接
-//        val title: String = "",                   // 默认英文/罗马音标题（如 "Berserk"）
-//        val synopsis: String?,                    // 漫画剧情简介、导语
-//        val images: MangaImages?,                 // 各种规格的封面图片集合
-//        val type: String?,                        // 类别：Manga(漫画), Novel(小说), Doujinshi(同人志)
-//        val chapters: Int?,                       // 总话数（如果完结了的话）
-//        val score: Double?                        // 全球二次元漫迷给出的评分（例如 9.47）
         fun setModel(model: MangaItem) {
             binding.tvDesc.text = "${model.title}"
             Glide.with(binding.root.context)
                 .load(model.images?.webp?.imageUrl)
                 .into(binding.image)
+        }
+    }
 
+    class GameViewHolder(private val binding: BaseListCelllRwagBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun setModel(model: SteamGameItem) {
 
+            binding.tvTitle.text = model.name ?: ""
+
+            binding.tvHeadline.text = model.headline ?: ""
+
+            if (model.discount_percent != null && model.discount_percent > 0) {
+                binding.tvDiscount.visibility = View.VISIBLE
+                binding.tvDiscount.text = "-${model.discount_percent}%"
+            } else {
+                binding.tvDiscount.visibility = View.GONE
+            }
+
+            val finalPrice = (model.final_price ?: 0) / 100.0
+            val originalPrice = (model.original_price ?: 0) / 100.0
+
+            binding.tvPrice.text = if (finalPrice <= 0) {
+                "Free"
+            } else {
+                "¥%.2f".format(finalPrice)
+            }
+
+            if (originalPrice > finalPrice && originalPrice > 0) {
+                binding.tvOriginalPrice.visibility = View.VISIBLE
+                binding.tvOriginalPrice.text = "¥%.2f".format(originalPrice)
+            } else {
+                binding.tvOriginalPrice.visibility = View.GONE
+            }
+
+            binding.tvWindows.visibility =
+                if (model.windows_available == true) View.VISIBLE else View.GONE
+
+            binding.tvMac.visibility =
+                if (model.mac_available == true) View.VISIBLE else View.GONE
+
+            binding.tvLinux.visibility =
+                if (model.linux_available == true) View.VISIBLE else View.GONE
+
+            binding.tvController.visibility =
+                if (!model.controller_support.isNullOrEmpty()) View.VISIBLE else View.GONE
+
+            Glide.with(binding.root.context)
+                .load(
+                    model.large_capsule_image
+                        ?: model.header_image
+                        ?: model.small_capsule_image
+                )
+                .centerCrop()
+                .into(binding.image)
+
+            binding.root.setOnClickListener {
+                // 后续跳转详情
+            }
         }
     }
 
@@ -94,6 +145,11 @@ class BaseListCellAdapter(
                 val binding = BaseListCellMangaBinding.inflate(inflater, parent, false)
                 MangaViewHolder(binding)
             }
+
+            ListDataType.GAMES.ordinal -> {
+                val binding = BaseListCelllRwagBinding.inflate(inflater, parent, false)
+                GameViewHolder(binding)
+            }
             else -> throw IllegalArgumentException("未知的布局类型，请检查 ListDataType 枚举")
         }
     }
@@ -113,6 +169,7 @@ class BaseListCellAdapter(
             when (holder) {
                 is PostViewHolder -> holder.setModel(item as com.zhiyi.android_first_demo.model.UnsplashImage)
                 is MangaViewHolder -> holder.setModel(item as MangaItem)
+                is GameViewHolder -> holder.setModel(item as SteamGameItem)
             }
         }
     }

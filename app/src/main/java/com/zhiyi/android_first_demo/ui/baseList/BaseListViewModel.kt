@@ -41,7 +41,8 @@ class BaseListViewModel : ViewModel() {
                     var ret = ApiClient.mangaService.getTopManga(currentPage)
                    data = ret.data
                 }else if(dataType == ListDataType.GAMES){
-
+                    var ret = ApiClient.steamService.getFeaturedCategories()
+                    data = ret.specials?.items ?: emptyList()
                 }
 
                 if(isRefresh){
