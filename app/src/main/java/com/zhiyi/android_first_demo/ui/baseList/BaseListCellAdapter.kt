@@ -59,43 +59,6 @@ class BaseListCellAdapter(
 
             binding.tvTitle.text = model.name ?: ""
 
-            binding.tvHeadline.text = model.headline ?: ""
-
-            if (model.discount_percent != null && model.discount_percent > 0) {
-                binding.tvDiscount.visibility = View.VISIBLE
-                binding.tvDiscount.text = "-${model.discount_percent}%"
-            } else {
-                binding.tvDiscount.visibility = View.GONE
-            }
-
-            val finalPrice = (model.final_price ?: 0) / 100.0
-            val originalPrice = (model.original_price ?: 0) / 100.0
-
-            binding.tvPrice.text = if (finalPrice <= 0) {
-                "Free"
-            } else {
-                "¥%.2f".format(finalPrice)
-            }
-
-            if (originalPrice > finalPrice && originalPrice > 0) {
-                binding.tvOriginalPrice.visibility = View.VISIBLE
-                binding.tvOriginalPrice.text = "¥%.2f".format(originalPrice)
-            } else {
-                binding.tvOriginalPrice.visibility = View.GONE
-            }
-
-            binding.tvWindows.visibility =
-                if (model.windows_available == true) View.VISIBLE else View.GONE
-
-            binding.tvMac.visibility =
-                if (model.mac_available == true) View.VISIBLE else View.GONE
-
-            binding.tvLinux.visibility =
-                if (model.linux_available == true) View.VISIBLE else View.GONE
-
-            binding.tvController.visibility =
-                if (!model.controller_support.isNullOrEmpty()) View.VISIBLE else View.GONE
-
             Glide.with(binding.root.context)
                 .load(
                     model.large_capsule_image

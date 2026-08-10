@@ -117,7 +117,7 @@ object NetworkManager {
         baseUrl: String,
         serviceClass: Class<T>,
         customHeaders: Map<String, String>? = null,
-        timeout: Long = 30,
+        timeout: Long = 60,
     ): T {
         val clientBuilder = baseOkHttpClient.newBuilder()
             .callTimeout(timeout,TimeUnit.SECONDS)
